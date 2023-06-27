@@ -1,12 +1,38 @@
 1. Batch (batch size):
     - Since manual feed is not efficient for large dataset, we divide the dataset into small batches. 
-    - We can go through each batch at once and updata our weight
+    - We can go through each batch at once, compute the gradients, and update our weight
 
 2. Neural Network Terminology:
     - One Epoch: one forward pass and one backward pass of all the training examples
-    - batch.size = the number of traing examples in one epoch. The higher the batch.size, the more memory will be required
+    - batch.size: the number of traing examples in one epoch. The higher the batch.size, the more memory will be required
+    - iteration: number of passes, where each pass using [batch.size] number of examples
 
-3. Custom DataLoader:
+3. DataLoader
+    - Queue:
+        for i, data in enumerate(train_loader, 0):
+            # get the inputs
+            inputs, labels = data
+            # wrap them in Variable
+            inputs, labels = Variable(inputs), Variable(labels)
+            #Run training process
+            print(epoch, i, "inputs", inputs.data, "labels", labels.data)
+
+4. Custom DataLoader:
     - Step 1: Download and read data
     - Step 2: Return one item on the index
     - Step 3: Return the data length
+
+    class DiabetesDataset(Dataset):
+        #Initialize your data, download, ...
+        def __init__(self):
+            # Something
+        def __getitem__(self, index):
+            # Something
+            return 
+        def __len__(self):
+            return
+    dataset = DiabetesDataset()
+    train_loader = DataLoader(dataset=dataset,
+                              batch_size=32,
+                              shuffle=True,
+                              num_workers=2)
