@@ -1,0 +1,12 @@
+1. Batch (batch size):
+    - Since manual feed is not efficient for large dataset, we divide the dataset into small batches. 
+    - We can go through each batch at once and updata our weight
+
+2. Neural Network Terminology:
+    - One Epoch: one forward pass and one backward pass of all the training examples
+    - batch.size = the number of traing examples in one epoch. The higher the batch.size, the more memory will be required
+
+3. Custom DataLoader:
+    - Step 1: Download and read data
+    - Step 2: Return one item on the index
+    - Step 3: Return the data length

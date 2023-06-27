@@ -1,0 +1,9 @@
+1. Softmax:
+
+    omega(z)_j = e^(z_j) / sum_from_k=1_to_K(e^(z_k))   for j = 1, ..., k
+
+
+    x _--> Linear operation ---> Z (scores or logits) -----> Softmax ------> Probabiltity (all of the result add up to 1) ----> Cross entrophy ----> 1-HOT lable
+
+2. Cost function: Cross entrophy:
+    - D(y', y) = -y log(y')

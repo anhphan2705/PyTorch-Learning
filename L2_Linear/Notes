@@ -1,0 +1,33 @@
+1. Linear Regression:           
+    - y' = x*w
+    - Machine starts with a random guess in order to get the random line as close to the true line as possible
+    - w = random value, y' = guess result, x = input
+    - True line is a line with the correct data
+
+    |
+    |   /
+    |  /
+    | /
+    |______
+
+2. Training loss (error)
+    - Loss = (y' - y)^2 = ((x*w)-y)^2
+
+    Hours,x       Points, y       Prediction y' (w=3)     Loss (w=3)
+    1             2               3                       (3-2)^2 = 1
+    2             4               6                       (6-4)^2 = 4
+    3             6               9                       (9-6)^2 = 9
+                                                    Mean = (1 + 4 + 9)/3 = 14/3
+
+    - Loss = 1/N * SUM_from_n=1_to_N(Y'_n - Y_n)^2
+    - MSE = mean square error
+    - When doing machine learning, we are trying to find the value that minimize the MSE value
+
+3. Loss graph    
+    loss|
+        | \     /
+        |  \   /
+        |   \_/
+        |__________ W
+
+    - Trying to find the w with the lowest loss value

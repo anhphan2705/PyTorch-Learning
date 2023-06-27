@@ -1,0 +1,23 @@
+    loss|
+        | \     /
+        |  \   /
+        |   \_/
+        |__________ W
+    Loss = (y' - y)^2 = ((x*w)-y)^2
+
+1. What is the learning goal?
+    - Finding the w the minimize the loss
+    - argmin loss(w)
+        w
+
+2. Gradient Descent Algorithm
+    - Gradient: derivative(loss)/derivative(w) = rate of change of loss per w
+    - How to:
+        + Pick a random point on the loss graph
+        + Decide to move inward or outward to find the lowest point by using gradient
+            + If the gradient (derivative at point w) is positive (+) ----> Move inward
+            + If the gradient (derivative at point w) is negative (-) ----> Move outward
+    - Notation: w = w - a * d(loss)/d(w)
+        + a is an alpha value, called learning rate. It decides how much the point will be move in/out, usually a small number such as 0.01
+
+    --> w will be updated as w = w - a * 2*x * (x*2 - y)

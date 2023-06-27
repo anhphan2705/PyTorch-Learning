@@ -1,0 +1,45 @@
+1. Matrix Multiplication:
+    x ------\
+             > ------> linear ------> Signmoid -------> y'
+    y ------/
+
+    - x_data = [[2.1, 0.1], [4.2, 0.8], [3.1, 0.9], [3.3, 0.2]]
+    - y_data = [[0.0], [1.0], [0.0], [1.0]]
+
+    |---      ---|                               |--  --|   
+    |   a_1 b_1  |         |--    ---|           |  y_1 |
+    |   a_2 b_2  |         |    w_1  |           |  y_2 |
+    |   ... ...  |    x    |    w_2  |     =     |  ... |
+    |   a_n b_n  |         |__     __|           |  y_n |
+    |___       __|                               |--  --|
+
+     x in (R_Nx2)           w in (R_2x1)        y in (R_Nx1)
+    ===>  (m x r) * (r x n) = (m x n)
+
+    - X*W = Y'
+        linear = torch.nn.Linear(2, 1)      # x:2, y:1
+        y_pred = linear(x_data)
+    - We can make it wider by having more rows in the matrix (m)
+    - Or making it deep by havin more columns in the matrix (n)
+
+2. Multiple layers:
+    x ------\
+             > ------> linear ------> Signmoid -------> linear ------> Signmoid -------> linear ------> Signmoid -------> ..... -------> y'
+    y ------/         |__________________________|     |__________________________|     |__________________________|
+                                Layer 1                         Layer 2                          Layer 3
+    - We can make the system deeper by introducing more layers
+    - How to:
+        sigmoid = torch.nn.Sigmoid()
+        l1 = torch.nn.Linear(2, 4)          
+        l2 = torch.nn.Linear(4, 3)                  # Always starts with 2 and end with 1 because (2x1) matrix
+        l3 = torch.nn.Linear(3, 1)
+
+        out1 = sigmoid(l1(x_data)
+        out2 = signmoid(l2(out1))
+        y_pred = sigmoid(l3(out2))
+
+3. Sigmoid Vanishing Gradient Problem:
+    - When introduce a deep layers into signmoid, it can crush the problem into a very small number
+    - However when doing back propagration, it can cause vanishing gradient problem (losing gradient)
+    - You can solve it by using other activation functions
+

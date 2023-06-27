@@ -1,0 +1,9 @@
+1. PyTorch Rhythm:
+    - Design your model using class with Variable
+    - Construct loss and optimizer (select from PyTorch API)
+    - Training cycle (forward, backward, and update)
+
+2. Data definition:
+    - 3x1 matrix
+    - Row x Column
+    

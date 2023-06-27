@@ -1,0 +1,35 @@
+Hours (x)           Points              Fail/pass
+1                   2                   0
+2                   4                   0
+3                   6                   1
+4                   ?                   ?
+
+1. Logistic Regression:
+    - x -> Linear -- f_y ---> Sigmoid -> y'
+    - Sigmoid
+        y'   1  |        _______
+                |       /
+                |      /
+                |     /
+                |____/
+                |_________________   f
+        + Notation omega(z) = 1 / (1 + e^(-z))
+        => y' = omega(x*w + b)
+
+2. Cross Entropy Loss (Binary):
+    - Loss = - 1/N * SUM_from_n=1_to_N(y_n * log(y'_n) + (1-y_n) * log(1-y'_n))
+    _________________/____________
+    |       ___/     1
+    |   ___/
+    |   /
+    |  /
+  1 | /
+    | |
+    |/
+    ||
+    - If prediction is correct, loss value will be small, big otherwise
+    y       y_pred         loss
+    1       0.2             - 1 * log(0.2) = -(-0.7) = 0.7          (big)
+    1       0.8             - 1 * log(0.8) = -(-0.1) = 0.1          (small)
+    0       0.1             - 1 * log(1-0.1) = -(-0.05) = 0.05      (small)
+    0       0.9             - 1 * log(1-0.9) = -(-1) = 1            (big)
