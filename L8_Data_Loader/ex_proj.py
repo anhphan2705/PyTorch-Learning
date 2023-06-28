@@ -7,7 +7,7 @@ class DiabetesDataset(Dataset):
 
     # Initialize your data, download, etc.
     def __init__(self):
-        xy = np.loadtxt('Pytorch_Learning\L7_Wide_Deep\diabetes.csv.gz', delimiter=',', dtype=np.float32)
+        xy = np.loadtxt('pytorch_learning\L7_Wide_Deep\diabetes.csv.gz', delimiter=',', dtype=np.float32)
         self.len = xy.shape[0]
         self.x_data = from_numpy(xy[:, 0:-1])
         self.y_data = from_numpy(xy[:, [-1]])

@@ -1,9 +1,98 @@
-1. Softmax:
+1. NMIST 10 labels:
+    - 10 labels: 10 outputs
+
+    x ---> | linear | Activation | ----> .... -----> | linear | Activation | -----> y'                      # 10 labels: 1 outputs
+
+           |                     |                   |        |            | -----> P(y=0) 
+    x ---> | linear | Activation | ----> .... -----> | linear | Activation | -----> ...       y'            # 10 label: 10 outputs
+           |                     |                   |        |            | -----> P(y=10)
+
+    - We have to use matrix multiplication to produce the correct outputs
+
+2. Softmax:
 
     omega(z)_j = e^(z_j) / sum_from_k=1_to_K(e^(z_k))   for j = 1, ..., k
+                                     
+                                     Z (scores or logits)                            Probabiltity                                   1-HOT lable
+           |                  | --->        2.0                 |             | ---> P(y=0) = 0.7         |                  | --->      1
+    x _--> | Linear operation | --->        1.0          -----> |   Softmax   | ---> P(y=1) = 0.2  -----> |  Cross entrophy  | --->      0  
+           |                  | --->        0.1                 |             | ---> P(y=2) = 0.1         |     D(y', y)     | --->      0
 
+    - Softmax is use to calculate a probability that an input will happen
+    - All the probabilities produced by softmax will add up to 1
+    - Cross entrophy is used to compare the predict reult vs. the real label in a 1-HOT format
 
-    x _--> Linear operation ---> Z (scores or logits) -----> Softmax ------> Probabiltity (all of the result add up to 1) ----> Cross entrophy ----> 1-HOT lable
-
-2. Cost function: Cross entrophy:
+3. Cost function: Cross entrophy:
     - D(y', y) = -y log(y')
+    - or Loss = 1/N * sum_from_i_to_infi(D(S(w*x_i +b), y'))        # where i is the training set
+    - Example: 
+        import numpy as np
+        # 1-HOT
+        # 0: 1 0 0
+        # 1: 0 1 0
+        # 2: 0 0 1
+        y = np.array([1, 0, 0])             # Correct labels
+
+        y_pred1 = np.array([0.7, 0.2, 0.1])
+        y_pred2 = np.array([0.1, 0.3, 0.6])
+
+        print("loss 1= ", np.sum(-Y * np.log(y_pred1)))     #0.35
+        print("loss 2= ", np.sum(-Y * np.log(y_pred2)))     #2.30
+    - How you calculate in the example:
+        + Loss 1 = [1, 0, 0] * log([0.7, 0.2, 0.1]) = 1 * log(0.7) + 0 * log() + 0 * log() = 0.35
+
+4. Cross Entrophy in PyTorch:
+    # Softmax + Cross Entrophy (logSoftmax + NLLLoss)
+    loss = nn.CrossEntrophyLoss()
+    # target each side of nBatch
+    # Each element in target has to have a 0 <= value < nClass (0-2)
+    # Input is class not 1-HOT
+    y = Variable(torch.LongTensor([0]), requires_grad=False)                # We can provides multiple labels
+    # Input is of size nBatch x nClass = 1x4
+    # y_pred are logits, not softmax
+    y_pred1 = Variable(torch.Tensor([2.0, 1.0, 0.1]))                       # We can provides multiple predictions
+    y_pred2 = Variable(torch.Tensor([0.5, 2.0, 0.3]))
+    # Calculate loss
+    l1 = loss(y_pred1, y)
+    l2 = loss(y_pred2, y)
+    # Print result
+    print("loss 1= ", l1.data)  #0.41
+    print("loss 2= ", l2.data)  #1.84
+
+5. MNIST network:
+    - MNIST = Modified National Institute of Standards and Technology
+    - Input an image that is 78x78 pixels = 784
+    - Input image ---> Input layer (784) -- nn --> Hidden layer 1 (520) -- nn --> Hidden layer 2 (320) -- nn --> Hidden layer 3 (240) -- nn --> Hidden layer 4 (120) -- nn --> Output layer (10 labelsl1
+    - in PyTorch:
+        self.l1 = nn.Linear(784, 520)
+            self.l2 = nn.Linear(520, 320)
+                self.l3 = nn.Linear(320, 240)
+                    self.l4 = nn.Linear(240, 120)
+                        self.l5 = nn.Linear(120, 10)
+            
+6. Softmax & NLLLoss:
+    - Example
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.l1 = nn.Linear(784, 520)
+            self.l2 = nn.Linear(520, 320)
+            self.l3 = nn.Linear(320, 240)
+            self.l4 = nn.Linear(240, 120)
+            self.l5 = nn.Linear(120, 10)
+
+        def foward(self, x):
+        # Flatten the data (n, 1, 28, 28) ----> (n, 784)
+        x = x.view(-1, 784)
+        x = F.relu(self.l1(x))
+        x = F.relu(self.l2(x))
+        x = F.relu(self.l3(x))
+        x = F.relu(self.l4(x))
+        return self.l5(x)
+
+7. Apply to code:
+    - Data will be divided to 2, one to train and one to test
+
+
+
+    
