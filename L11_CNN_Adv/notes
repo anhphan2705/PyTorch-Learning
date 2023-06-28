@@ -1,0 +1,47 @@
+1. Inception Module:
+    - The question is how to choose the filter size to analyze data? There are so many size option.
+    - The idea of inception module is to use all possible combination of filters to analyze and connect all of them together.
+
+2. Why use 1x1 Conv?
+    - 1x1 conv with 32 filters
+    - Each filter has size 1x1x64, and performs a 64-dimesion dot product
+    - Input 192@28x28 ---> conv 5x5 kernel ---> 32@28x28                                                # This create 5^2 * 28^2 * 192 * 32                         = 120,422,400 operations
+    - Input 192@28x28 ---> conv 1x1 kernel ---> 16@28x28 ---> conv 5x5 layer ---> 32@28x28              # This create 1^1 * 28^2 * 192 * 16 + 5^2 * 28^2 * 16 * 32  =  12,443,648 operations
+
+3. Inception Module Sample:
+            ____________________      Filter concat     ___________________                   /\
+            |                        |            |                   3x3 conv (24)          /||\
+        1x1 conv (24)                |           5x5 conv (24)       3x3 conv (24)            ||
+        avg pooling         1x1 conv (16)       1x1 conv (16)       1x1 conv (16)             ||
+            |                        \           /                         |                  ||
+            |_____________________    Filter concat   _____________________|                  ||
+
+4. Can we just go deeper with more layers?
+    - With a plain nets stacking 3x3 layers, 56-layer net has higher training error and test error than 20-layer net
+    - "Overly deep" nets have a higher training error
+
+5. Problem with stacking layers
+    - Vashing grdient problem
+    - Back propagation kind of gives up
+    - Degradtion problem
+        + increase network depth = accuracy gets satuarated and rapidly degrades
+
+6. Deep Residual Learing
+    - Plain net             x ----> | weight layer | ---> relu ---> | weight layer | ---> relu ---> H(x)
+    - Residual net          x --+-> | weight layer | ---> relu ---> | weight layer | -+-> relu ---> H(x) = F(x) + x
+                                |_____________________________________________________|
+            
+7. Network "Design"
+    - Keep it simple
+    - Our basic design (VGG-style)
+        + All 3x3 conv (almost)
+        + Spatial size /2 => #filters x2 (~ same complexity per layer)
+        + Simple design but deep
+    - Other remarks:
+        + No hidden fc
+        + No dropouts
+
+8. ImageNet experiments
+    - A practical design of going deeper
+    - When connecting the residual, keep in mind the size has to be the same |f(x)| = |x|
+    - It might cause bottle neck
